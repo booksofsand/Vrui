@@ -1,7 +1,7 @@
 /***********************************************************************
 CAVERenderer - Vislet class to render the default KeckCAVES backround
 image seamlessly inside a VR application.
-Copyright (c) 2005-2016 Oliver Kreylos
+Copyright (c) 2005-2007 Oliver Kreylos
 
 This file is part of the Virtual Reality User Interface Library (Vrui).
 
@@ -25,17 +25,14 @@ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define VRUI_VISLETS_CAVERENDERER_INCLUDED
 
 #include <string>
-#include <Geometry/OrthogonalTransformation.h>
 #include <GL/gl.h>
 #include <GL/GLMaterial.h>
 #include <GL/GLObject.h>
 #include <Images/RGBImage.h>
-#include <Vrui/Geometry.h>
 #include <Vrui/Vislet.h>
 
 /* Forward declarations: */
 namespace Vrui {
-class Lightsource;
 class VisletManager;
 }
 
@@ -45,7 +42,7 @@ namespace Vislets {
 
 class CAVERenderer;
 
-class CAVERendererFactory:public VisletFactory
+class CAVERendererFactory:public Vrui::VisletFactory
 	{
 	friend class CAVERenderer;
 	
@@ -58,7 +55,7 @@ class CAVERendererFactory:public VisletFactory
 	
 	/* Constructors and destructors: */
 	public:
-	CAVERendererFactory(VisletManager& visletManager);
+	CAVERendererFactory(Vrui::VisletManager& visletManager);
 	virtual ~CAVERendererFactory(void);
 	
 	/* Methods: */
@@ -66,7 +63,7 @@ class CAVERendererFactory:public VisletFactory
 	virtual void destroyVislet(Vislet* vislet) const;
 	};
 
-class CAVERenderer:public Vislet,public GLObject
+class CAVERenderer:public Vrui::Vislet,public GLObject
 	{
 	friend class CAVERendererFactory;
 	
@@ -90,15 +87,12 @@ class CAVERenderer:public Vislet,public GLObject
 	static CAVERendererFactory* factory; // Pointer to the factory object for this class
 	
 	/* Renderer properties: */
-	OGTransform caveTransform; // Transformation to align the CAVE model with the local VR environment
 	GLMaterial surfaceMaterial;
 	int tilesPerFoot;
 	Images::RGBImage wallTextureImage;
 	Images::RGBImage floorTextureImage;
-	Vrui::Lightsource* lightsources[4]; // Pointers to the four static ceiling light sources
 	
 	/* Saved viewer headlight states: */
-	int numViewers; // Number of saved viewer headlight states
 	bool* viewerHeadlightStates; // Array of enable flags for each viewer's headlight
 	
 	/* Animation state: */
@@ -114,7 +108,6 @@ class CAVERenderer:public Vislet,public GLObject
 	/* Constructors and destructors: */
 	public:
 	CAVERenderer(int numArguments,const char* const arguments[]);
-	virtual ~CAVERenderer(void);
 	
 	/* Methods: */
 	public:

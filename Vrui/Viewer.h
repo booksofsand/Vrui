@@ -1,6 +1,6 @@
 /***********************************************************************
 Viewer - Class for viewers/observers in VR environments.
-Copyright (c) 2004-2016 Oliver Kreylos
+Copyright (c) 2004-2008 Oliver Kreylos
 
 This file is part of the Virtual Reality User Interface Library (Vrui).
 
@@ -29,14 +29,13 @@ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <GL/gl.h>
 #include <GL/GLLight.h>
 #include <Vrui/Geometry.h>
-#include <Vrui/InputDevice.h>
 
 /* Forward declarations: */
 namespace Misc {
 class ConfigurationFileSection;
 }
 namespace Vrui {
-class InputDeviceAdapter;
+class InputDevice;
 class Lightsource;
 }
 
@@ -56,11 +55,7 @@ class Viewer
 	char* viewerName; // Viewer name
 	bool headTracked; // Flag if the viewer is head-tracked
 	const InputDevice* headDevice; // Pointer to input device used for head tracking
-	InputDeviceAdapter* headDeviceAdapter; // Pointer to input device adapter responsible for the head tracking device
-	int headDeviceIndex; // Index of head tracking device in its input device adapter
-	TrackerState headDeviceTransformation; // Fixed head coordinate frame if head tracking is disabled
 	Vector deviceViewDirection; // Viewing direction in head device coordinates
-	Vector deviceUpDirection; // Up direction in head device coordinates
 	Point deviceMonoEyePosition; // Eye position for monoscopic viewing in head device coordinates
 	Point deviceLeftEyePosition; // Left eye position in head device coordinates
 	Point deviceRightEyePosition; // Right eye position in head device coordinates
@@ -69,6 +64,7 @@ class Viewer
 	Vector headLightDeviceDirection; // Direction of head light source in head device coordinates
 	
 	/* Transient state data: */
+	TrackerState headDeviceTransformation; // Head coordinate frame
 	
 	/* Constructors and destructors: */
 	public:
@@ -77,16 +73,8 @@ class Viewer
 	
 	/* Methods: */
 	void initialize(const Misc::ConfigurationFileSection& configFileSection); // Initializes viewer by reading current configuration file section
-	const InputDevice* getHeadDevice(void) const // Returns pointer to the viewer's head device, or 0 if not headtracked
-		{
-		if(headTracked)
-			return headDevice;
-		else
-			return 0;
-		}
 	void attachToDevice(const InputDevice* newHeadDevice); // Attaches the viewer to a head device
 	void detachFromDevice(const TrackerState& newHeadDeviceTransformation); // Turns viewer into a static viewer
-	void setIPD(Scalar newIPD); // Overrides the viewer's inter-pupillary distance by sliding eyes along their connecting line
 	void setEyes(const Vector& newViewDirection,const Point& newMonoEyePosition,const Vector& newEyeOffset); // Sets view direction and eye positions in head device coordinates
 	const char* getName(void) const // Returns viewer's name
 		{
@@ -100,28 +88,15 @@ class Viewer
 	void update(void); // Updates viewer state in frame callback
 	const TrackerState& getHeadTransformation(void) const // Returns head transformation
 		{
-		return headTracked?headDevice->getTransformation():headDeviceTransformation;
+		return headDeviceTransformation;
 		}
-	TrackerState peekHeadTransformation(void); // Returns an up-to-date head transformation during frame processing
 	Point getHeadPosition(void) const // Returns head position in physical coordinates
 		{
-		return getHeadTransformation().transform(deviceMonoEyePosition);
-		}
-	const Vector& getDeviceViewDirection(void) const // Returns view direction in head device coordinates
-		{
-		return deviceViewDirection;
+		return headDeviceTransformation.transform(deviceMonoEyePosition);
 		}
 	Vector getViewDirection(void) const // Returns view direction in physical coordinates
 		{
-		return getHeadTransformation().transform(deviceViewDirection);
-		}
-	const Vector& getDeviceUpDirection(void) const // Returns up direction in head device coordinates
-		{
-		return deviceUpDirection;
-		}
-	Vector getUpDirection(void) const // Returns up direction in physical coordinates
-		{
-		return getHeadTransformation().transform(deviceUpDirection);
+		return headDeviceTransformation.transform(deviceViewDirection);
 		}
 	const Point& getDeviceEyePosition(Eye eye) const // Returns eye position in head device coordinates
 		{
@@ -142,7 +117,7 @@ class Viewer
 		}
 	Point getEyePosition(Eye eye) const // Returns eye position in physical coordinates
 		{
-		return getHeadTransformation().transform(getDeviceEyePosition(eye));
+		return headDeviceTransformation.transform(getDeviceEyePosition(eye));
 		}
 	};
 
