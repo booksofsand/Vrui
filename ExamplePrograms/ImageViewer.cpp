@@ -35,6 +35,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Vrui/ToolManager.h>
 #include <Vrui/DisplayState.h>
 #include <Vrui/OpenFile.h>
+#include <IOstream> //MM:
 
 class ImageViewer:public Vrui::Application
 	{
@@ -42,7 +43,8 @@ class ImageViewer:public Vrui::Application
 	private:
 	class PipetteTool; // Forward declaration
 	typedef Vrui::GenericToolFactory<PipetteTool> PipetteToolFactory; // Pipette tool class uses the generic factory class
-	
+
+	  // MM: PipetteTool - picks color values from an image. sounds useful!
 	class PipetteTool:public Vrui::Tool,public Vrui::Application::Tool<ImageViewer> // A tool class to pick color values from an image, derived from application tool class
 		{
 		friend class Vrui::GenericToolFactory<PipetteTool>;
@@ -115,7 +117,9 @@ void ImageViewer::PipetteTool::setPixelPos(void)
 	}
 
 void ImageViewer::PipetteTool::initClass(void)
+
 	{
+	  std::cout << "init pipette" << endl; // MM:
 	/* Create a factory object for the pipette tool class: */
 	factory=new PipetteToolFactory("PipetteTool","Pick Color Value",0,*Vrui::getToolManager());
 	
@@ -153,7 +157,8 @@ void ImageViewer::PipetteTool::buttonCallback(int buttonSlotIndex,Vrui::InputDev
 		/* Stop dragging: */
 		dragging=false;
 		setPixelPos();
-		
+
+		// MM: see the following operations for grabbing a color (though from an area larger than a pixel)
 		/* Access the displayed image: */
 		Images::RGBImage image(application->textures.getTexture(0U).getImage());
 		
