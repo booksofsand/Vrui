@@ -215,13 +215,15 @@ GLColorMap& GLColorMap::setColors(GLsizei numKeys,const Color* colors,const GLdo
 	
 	/* Create entry array: */
 	setNumEntries(newNumEntries);
-	
+
+	// MM: for every possible color (256)
 	/* Evaluate the color function: */
 	for(GLsizei i=0;i<numEntries;++i)
 		{
 		/* Calculate the key value for this color map entry: */
 		GLdouble val=GLdouble(i)*(max-min)/GLdouble(numEntries-1)+min;
-		
+
+		// MM: what is linear segment?
 		/* Find the piecewise linear segment of the color function containing the key value using binary search: */
 		GLsizei l=0;
 		GLsizei r=numKeys;
@@ -235,6 +237,7 @@ GLColorMap& GLColorMap::setColors(GLsizei numKeys,const Color* colors,const GLdo
 				r=m;
 			}
 		
+		// MM: what is linear segment?
 		/* Evaluate the linear segment: */
 		if(r<numEntries)
 			{

@@ -19,7 +19,8 @@ with the OpenGL Support Library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
-// MM: I think this is what decides what depths result in what colors. 
+// MM: this is the data structure that holds the color values
+//     how is it different from ElevationColorMap?
 
 #ifndef GLCOLORMAP_INCLUDED
 #define GLCOLORMAP_INCLUDED

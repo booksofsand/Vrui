@@ -119,7 +119,6 @@ void ImageViewer::PipetteTool::setPixelPos(void)
 void ImageViewer::PipetteTool::initClass(void)
 
 	{
-	  std::cout << "init pipette" << endl; // MM:
 	/* Create a factory object for the pipette tool class: */
 	factory=new PipetteToolFactory("PipetteTool","Pick Color Value",0,*Vrui::getToolManager());
 	
