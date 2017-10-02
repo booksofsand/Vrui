@@ -234,6 +234,8 @@ ImageViewer::ImageViewer(int& argc,char**& argv)
 	:Vrui::Application(argc,argv)
 	{
 	/* Load the image into the texture set: */
+        // MM: addTexture(BaseImage, open file target, internal format, key)
+	//     GL_RGB8 must mean RGB 8-bit image. Note the key, 0U, is referenced in display()
 	Images::TextureSet::Texture& tex=textures.addTexture(Images::readImageFile(argv[1],Vrui::openFile(argv[1])),GL_TEXTURE_2D,GL_RGB8,0U);
 	
 	/* Set clamping and filtering parameters for mip-mapped linear interpolation: */
@@ -257,9 +259,13 @@ void ImageViewer::display(GLContextData& contextData) const
 	glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 	
 	/* Get the texture set's GL state: */
+	// MM: getGLState returns OpenGL texture state object for the given OpenGL context
 	Images::TextureSet::GLState* texGLState=textures.getGLState(contextData);
 	
 	/* Bind the texture object: */
+	// MM: bindTexture binds the texture object associated with the given key
+	//     to its texture target on the current texture unit, returns texture state.
+	//     Note the key is 0U, which was the key in ImageViewer constructor.
 	const Images::TextureSet::GLState::Texture& tex=texGLState->bindTexture(0U);
 	const Images::BaseImage& image=tex.getImage();
 	
@@ -283,6 +289,8 @@ void ImageViewer::display(GLContextData& contextData) const
 	glBindTexture(GL_TEXTURE_2D,0);
 	
 	/* Draw the image's backside: */
+	// MM: this is because ImageViewer allows you to tilt & move the image
+	//     so it needs a blank "back" for if you flip the image over
 	glDisable(GL_TEXTURE_2D);
 	glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
 	
