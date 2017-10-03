@@ -268,15 +268,19 @@ void ImageViewer::display(GLContextData& contextData) const
 	//     Note the key is 0U, which was the key in ImageViewer constructor.
 	const Images::TextureSet::GLState::Texture& tex=texGLState->bindTexture(0U);
 	const Images::BaseImage& image=tex.getImage();
+	// MM: try replacing this with Image so can test the setPixel() method (TO DO)
 	
 	/* Query the range of texture coordinates: */
 	const GLfloat* texMin=tex.getTexCoordMin();
 	const GLfloat* texMax=tex.getTexCoordMax();
 	
 	/* Draw the image: */
+	/* MM: Note: texture coordinates specify the point in the texture image that will 
+               correspond to the vertex you're specifying them for. see Vrui and OpenGL notes */
 	glBegin(GL_QUADS);
-	glTexCoord2f(texMin[0],texMin[1]);
-	glVertex2i(0,0);
+	// MM: ^ specifies the following vertices as groups of 4 to interpret as quadrilaterals
+	glTexCoord2f(texMin[0],texMin[1]);  // MM: texture coords. 2f means two floats (for 2D)
+	glVertex2i(0,0);                    // MM: vertex points. 2i means two ints (for 2D)
 	glTexCoord2f(texMax[0],texMin[1]);
 	glVertex2i(image.getSize(0),0);
 	glTexCoord2f(texMax[0],texMax[1]);
@@ -284,6 +288,7 @@ void ImageViewer::display(GLContextData& contextData) const
 	glTexCoord2f(texMin[0],texMax[1]);
 	glVertex2i(0,image.getSize(1));
 	glEnd();
+	// MM: ^ ends the listing of vertices
 	
 	/* Protect the texture object: */
 	glBindTexture(GL_TEXTURE_2D,0);
