@@ -233,14 +233,33 @@ Methods of class ImageViewer:
 ImageViewer::ImageViewer(int& argc,char**& argv)
 	:Vrui::Application(argc,argv)
 	{
-	/* Load the image into the texture set: */
+	// Load the image into the texture set
         // MM: addTexture(BaseImage, open file target, internal format, key)
+	//     Adds a new texture image for the given key and returns the new texture set entry;
+	//     throws exception if key is not unique.
+	//     Since images are 2D arrays of pixels, it will be bound to the GL_TEXTURE_2D target.
 	//     GL_RGB8 must mean RGB 8-bit image. Note the key, 0U, is referenced in display()
-	Images::TextureSet::Texture& tex=textures.addTexture(Images::readImageFile(argv[1],Vrui::openFile(argv[1])),GL_TEXTURE_2D,GL_RGB8,0U);
+	Images::TextureSet::Texture& tex=textures.addTexture(Images::readImageFile(argv[1],
+										   Vrui::openFile(argv[1])),
+							     GL_TEXTURE_2D,
+							     GL_RGB8,
+							     0U);
 	
-	/* Set clamping and filtering parameters for mip-mapped linear interpolation: */
+	// Set clamping and filtering parameters for mip-mapped linear interpolation
+	// MM: mipmaps are pre-calculated, optimized sequences of images, intended to
+	//     increase rendering speed. 
 	tex.setMipmapRange(0,1000);
+	// MM: GL_CLAMP_TO_EDGE causes s coordinates to be clamped to the range
+	//     [1/2n, 1 - 1/2n], where n is the size of the texture
+	//     in the direction of clamping
 	tex.setWrapModes(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE);
+	// MM: The texture minifying function is used whenever the pixel being textured
+	//     maps to an area greater than one texture element. GL_LINEAR_MIPMAP_LINEAR
+	//     chooses the two mipmaps that most closely match the size of the pixel
+	//     being textured and uses the GL_LINEAR criterion (a weighted average of
+	//     the four texture elements that are closest to the center of the pixel) to
+	//     produce a texture value from each mipmap. The final texture value is a
+	//     weighted average of those two values.
 	tex.setFilterModes(GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
 	
 	/* Initialize the pipette tool class: */
