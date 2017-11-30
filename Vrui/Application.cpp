@@ -25,6 +25,7 @@ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <Geometry/OrthogonalTransformation.h>
 #include <Vrui/Geometry.h>
 #include <Vrui/Vrui.h>
+#include <iostream>  // MM: added
 
 #include <Vrui/Application.h>
 
@@ -83,6 +84,7 @@ void Application::addEventTool(const char* toolName,ToolFactory* parentClass,App
 Application::Application(int& argc,char**& argv,char**& appDefaults)
 	:nextEventToolClassIndex(0)
 	{
+	std::cout << "In Application::Application (Vrui::Application.cpp)." << std::endl;  // MM: added
 	/* Initialize Vrui: */
 	init(argc,argv,appDefaults);
 	
@@ -98,6 +100,7 @@ Application::Application(int& argc,char**& argv,char**& appDefaults)
 Application::Application(int& argc,char**& argv)
 	:nextEventToolClassIndex(0)
 	{
+	std::cout << "In Application::Application (Vrui::Application.cpp)." << std::endl;  // MM: added
 	/* Initialize Vrui: */
 	char** appDefaults=0;
 	init(argc,argv,appDefaults);
@@ -124,6 +127,7 @@ Application::~Application(void)
 
 void Application::run(void)
 	{
+	std::cout << "In Application::run (Vrui::Application.cpp)." << std::endl;  // MM: added
 	/* Install Vrui callbacks: */
 	setFrameFunction(frameWrapper,this);
 	setDisplayFunction(displayWrapper,this);

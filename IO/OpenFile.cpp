@@ -28,11 +28,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <IO/GzipFilter.h>
 #include <IO/SeekableFilter.h>
 #include <IO/StandardDirectory.h>
+#include <iostream> // MM: added
 
 namespace IO {
 
 FilePtr openFile(const char* fileName,File::AccessMode accessMode)
 	{
+	std::cout << "In FilePtr openFile (IO::OpenFile.cpp)." << std::endl;  // MM: added
+	std::cout << "    File: " << fileName << std::endl;  // MM: added
 	FilePtr result;
 	
 	/* Open the base file: */
@@ -51,6 +54,8 @@ FilePtr openFile(const char* fileName,File::AccessMode accessMode)
 
 SeekableFilePtr openSeekableFile(const char* fileName,File::AccessMode accessMode)
 	{
+	std::cout << "In SeekableFilePtr openSeekableFile (IO::OpenFile.cpp)." << std::endl;  // MM: added
+	std::cout << "    File: " << fileName << std::endl;  // MM: added
 	/* Open a potentially non-seekable file first: */
 	FilePtr file=openFile(fileName,accessMode);
 	
@@ -67,6 +72,8 @@ SeekableFilePtr openSeekableFile(const char* fileName,File::AccessMode accessMod
 
 DirectoryPtr openDirectory(const char* directoryName)
 	{
+	// MM: added
+	std::cout << "In DirectoryPtr openDirectory (IO::OpenFile.cpp)." << std::endl; 
 	return new StandardDirectory(directoryName);
 	}
 

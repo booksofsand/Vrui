@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
 #include <IO/Directory.h>
+#include <iostream> // MM: added
 
 #include <Misc/ThrowStdErr.h>
 
@@ -47,6 +48,8 @@ Methods of class Directory:
 
 std::string& Directory::normalizePath(std::string& path,unsigned int prefixLength)
 	{
+	std::cout << "In Directory::normalizePath (IO::Directory.cpp)." << std::endl;  // MM: added
+	std::cout << "   Path: " << path << std::endl;  // MM: added
 	/* Process path components until the path is over: */
 	std::string::size_type length=path.length();
 	std::string::size_type compBegin=prefixLength;
@@ -126,12 +129,19 @@ std::string::const_iterator Directory::getLastComponent(const std::string& path,
 		}
 	}
 
+// MM: adding this constructor to test when Directory made
+Directory::Directory()
+	{
+	std::cout << "In Directory::Directory (IO::Directory.cpp)." << std::endl;  // MM: added
+	}
+	
 Directory::~Directory(void)
 	{
 	}
 
 void Directory::setCurrent(DirectoryPtr newCurrentDirectory)
 	{
+	std::cout << "In Directory::setCurrent (IO::Directory.cpp)." << std::endl;  // MM: added
 	currentDirectory=newCurrentDirectory;
 	}
 

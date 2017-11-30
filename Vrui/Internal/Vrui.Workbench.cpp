@@ -282,6 +282,7 @@ int vruiXIOErrorHandler(Display* display)
 
 std::string vruiCreateConfigurationFilePath(const char* directory,const char* configFileName)
 	{
+	std::cout << "In vruiCreateConfigurationFilePath (Vrui::Vrui.Workbench.cpp)." << std::endl;  // MM: added
 	/* Prepend the path prefix to the given configuration file name: */
 	std::string result(directory);
 	result.push_back('/');
@@ -324,6 +325,7 @@ bool vruiMergeConfigurationFile(const char* configFileName)
 
 void vruiOpenConfigurationFile(const char* userConfigDir,const char* appPath)
 	{
+	std::cout << "In vruiOpenConfigurationFile (Vrui::Vrui.Workbench.cpp)." << std::endl;  // MM: added
 	/* Create the name of the system-wide configuration file: */
 	std::string systemConfigFileName=VRUI_INTERNAL_CONFIG_SYSCONFIGDIR;
 	systemConfigFileName.push_back('/');
@@ -594,6 +596,7 @@ Call-in functions for user program:
 
 void init(int& argc,char**& argv,char**&)
 	{
+	std::cout << "In init (Vrui::Vrui.Workbench.cpp)." << std::endl;  // MM: added
 	/* Determine whether this node is the master or a slave: */
 	if(argc==8&&strcmp(argv[1],"-vruiMultipipeSlave")==0)
 		{
@@ -1901,6 +1904,7 @@ void vruiInnerLoopSingleWindow(void)
 
 void mainLoop(void)
 	{
+	std::cout << "In mainLoop (Vrui::Vrui.Workbench.cpp)." << std::endl;  // MM: added
 	/* Bail out if someone requested a shutdown during the initialization procedure: */
 	if(vruiAsynchronousShutdown)
 		{

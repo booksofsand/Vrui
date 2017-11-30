@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <Misc/GetCurrentDirectory.h>
 #include <IO/OpenFile.h>
+#include <iostream> // MM: added
 
 namespace IO {
 
@@ -35,6 +36,8 @@ StandardDirectory::StandardDirectory(const char* sPathName)
 	:directory(0),
 	 entry(0)
 	{
+	std::cout << "In StandardDirectory::StandardDirectory (IO::StandardDirectory)." << std::endl;  // MM: added
+	std::cout << "    Path: " << sPathName << std::endl;  // MM: added
 	/* Prepend the current directory path to the path name if the given path name is relative: */
 	if(sPathName[0]!='/')
 		{
@@ -83,6 +86,7 @@ std::string StandardDirectory::getPath(void) const
 
 std::string StandardDirectory::getPath(const char* relativePath) const
 	{
+	std::cout << "In StandardDirectory::getPath (IO::StandardDirectory)." << std::endl;  // MM: added
 	/* Check if the given path is absolute: */
 	if(relativePath[0]=='/')
 		{
@@ -217,6 +221,9 @@ Misc::PathType StandardDirectory::getPathType(const char* relativePath) const
 
 FilePtr StandardDirectory::openFile(const char* fileName,File::AccessMode accessMode) const
 	{
+	  
+	std::cout << "In FilePtr StandardDirectory::openFile (IO::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    File name: " << fileName << std::endl;  // MM: added
 	/* Assemble the absolute path name of the given file: */
 	std::string filePath;
 	if(fileName[0]=='/')
@@ -239,6 +246,8 @@ FilePtr StandardDirectory::openFile(const char* fileName,File::AccessMode access
 
 DirectoryPtr StandardDirectory::openDirectory(const char* directoryName) const
 	{
+	std::cout << "In DirectoryPtr StandardDirectory::openDirectory (IO::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    Dir name: " << directoryName << std::endl;  // MM: added
 	/* Assemble the absolute path name of the given directory: */
 	std::string directoryPath;
 	if(directoryName[0]=='/')

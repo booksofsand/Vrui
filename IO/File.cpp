@@ -20,7 +20,8 @@ with the I/O Support Library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
-#define DEBUGGING 0
+//#define DEBUGGING 0
+#define DEBUGGING 1  // MM: added
 
 #include <IO/File.h>
 

@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <errno.h>
 #include <unistd.h>
 #include <Misc/ThrowStdErr.h>
+#include <iostream>  // MM: added
 
 #ifdef __APPLE__
 #define lseek64 lseek
@@ -42,6 +43,7 @@ Methods of class StandardFile:
 
 size_t StandardFile::readData(File::Byte* buffer,size_t bufferSize)
 	{
+	std::cout << "In size_t StandardFile::readData (IO::StandardFile.cpp)." << std::endl;  // MM: added
 	/* Check if file needs to be repositioned: */
 	if(filePos!=readPos)
 		if(lseek64(fd,readPos,SEEK_SET)<0)
@@ -148,6 +150,8 @@ size_t StandardFile::writeDataUpTo(const File::Byte* buffer,size_t bufferSize)
 
 void StandardFile::openFile(const char* fileName,File::AccessMode accessMode,int flags,int mode)
 	{
+	std::cout << "In StandardFile::openFile (IO::StandardFile.cpp)" << std::endl;  // MM: added
+	std::cout << "    File: " << fileName << std::endl;  // MM: added
 	/* Adjust flags according to access mode: */
 	switch(accessMode)
 		{
@@ -187,6 +191,7 @@ StandardFile::StandardFile(const char* fileName,File::AccessMode accessMode)
 	 fd(-1),
 	 filePos(0)
 	{
+	std::cout << "In StandardFile::StandardFile (IO::StandardFile.cpp)." << std::endl;  // MM: added
 	/* Create flags and mode to open the file: */
 	int flags=O_CREAT;
 	if(accessMode==WriteOnly)
@@ -202,6 +207,7 @@ StandardFile::StandardFile(const char* fileName,File::AccessMode accessMode,int 
 	 fd(-1),
 	 filePos(0)
 	{
+	std::cout << "In StandardFile::StandardFile (IO::StandardFile.cpp)." << std::endl;  // MM: added
 	/* Open the file: */
 	openFile(fileName,accessMode,flags,mode);
 	}

@@ -43,6 +43,8 @@ class Directory:public Threads::RefCounted
 	{
 	/* Embedded classes: */
 	public:
+	  // MM: adding this constructor to test when Directory made
+        Directory();
 	class OpenError:public std::runtime_error // Exception class to report directory opening errors
 		{
 		/* Constructors and destructors: */

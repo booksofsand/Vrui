@@ -112,6 +112,7 @@ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <Vrui/Internal/InputDeviceDataSaver.h>
 #include <Vrui/Internal/ScaleBar.h>
 #include <Vrui/OpenFile.h>
+#include <iostream> // MM: added
 
 #if EVILHACK_LOCK_INPUTDEVICE_POS
 
@@ -390,6 +391,7 @@ void VruiState::updateNavigationTransformation(const NavTransform& newTransform)
 
 void VruiState::loadViewpointFile(IO::Directory& directory,const char* viewpointFileName)
 	{
+	std::cout << "In VruiState::loadViewpointFile (Vrui::Vrui.General.cpp)." << std::endl;  // MM: added
 	/* Open the viewpoint file: */
 	IO::FilePtr viewpointFile=directory.openFile(viewpointFileName);
 	viewpointFile->setEndianness(Misc::LittleEndian);
@@ -488,6 +490,7 @@ VruiState::VruiState(Cluster::Multiplexer* sMultiplexer,Cluster::MulticastPipe* 
 	 activeNavigationTool(0),
 	 updateContinuously(false)
 	{
+	std::cout << "In VruiState::VruiState (Vrui::Vrui.General.cpp)." << std::endl;  // MM: added
 	#if SAVESHAREDVRUISTATE
 	vruiSharedStateFile=IO::openFile("/tmp/VruiSharedState.dat",IO::File::WriteOnly);
 	vruiSharedStateFile->setEndianness(IO::File::LittleEndian);
@@ -570,6 +573,7 @@ VruiState::~VruiState(void)
 
 void VruiState::initialize(const Misc::ConfigurationFileSection& configFileSection)
 	{
+	std::cout << "In VruiState::initialize (Vrui::Vrui.General.cpp)." << std::endl;  // MM: added
 	typedef std::vector<std::string> StringList;
 	
 	/* Check whether the screen saver should be inhibited: */
@@ -917,6 +921,7 @@ void VruiState::initialize(const Misc::ConfigurationFileSection& configFileSecti
 	
 	/* Initialize the suggested animation frame interval: */
 	animationFrameInterval=configFileSection.retrieveValue<double>("./animationFrameInterval",animationFrameInterval);
+	std::cout << "Done with VruiState::initialize (Vrui::Vrui.General.cpp)." << std::endl;  // MM: added
 	}
 
 void VruiState::createSystemMenu(void)
@@ -986,9 +991,9 @@ void VruiState::prepareMainLoop(void)
 	if(!viewpointFileName.empty())
 		{
 		/* Split the given name into directory and file name: */
-		const char* vfn=viewpointFileName.c_str();
-		const char* fileName=Misc::getFileName(vfn);
-		std::string dirName(vfn,fileName);
+		const char* vfn = viewpointFileName.c_str();
+		const char* fileName = Misc::getFileName(vfn);
+		std::string dirName(vfn, fileName);
 		
 		/* Override the navigation transformation: */
 		try
@@ -1307,6 +1312,7 @@ void setClipPlane(GLClipPlaneTracker* cpt,const Plane& clipPlane,GLint clipPlane
 
 void VruiState::display(DisplayState* displayState,GLContextData& contextData) const
 	{
+	std::cout << "In VruiState::display (Vrui::Vrui.General.cpp)." << std::endl;  // MM: added
 	/* Initialize lighting state through the display state's light tracker: */
 	GLLightTracker* lt=contextData.getLightTracker();
 	lt->setLightingEnabled(true);
@@ -1783,6 +1789,7 @@ void setResetNavigationFunction(ResetNavigationFunctionType resetNavigationFunct
 
 Cluster::Multiplexer* getClusterMultiplexer(void)
 	{
+	  std::cout << "in Vrui.General.cpp Cluster::Multiplexer* getClusterMultiplexer" << vruiState->multiplexer << std::endl;
 	return vruiState->multiplexer;
 	}
 

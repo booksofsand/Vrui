@@ -35,11 +35,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <Cluster/StandardFile.h>
 #include <Cluster/TCPPipe.h>
 #include <Cluster/StandardDirectory.h>
+#include <iostream> //MM: added
 
 namespace Cluster {
 
 IO::FilePtr openFile(Multiplexer* multiplexer,const char* fileName,IO::File::AccessMode accessMode)
 	{
+	std::cout << "In IO::FilePtr openFile (Cluster::OpenFile.cpp)." << std::endl;  // MM: added
+	std::cout << "    File: " << fileName << std::endl;  // MM: added
 	IO::FilePtr result;
 	
 	/* Open the base file: */
@@ -120,6 +123,8 @@ IO::SeekableFilePtr openSeekableFile(Multiplexer* multiplexer,const char* fileNa
 
 IO::DirectoryPtr openDirectory(Multiplexer* multiplexer,const char* directoryName)
 	{
+	std::cout << "In IO::DirectoryPtr openDirectory (Cluster::OpenFile.cpp)." << std::endl;  // MM: added
+	std::cout << "    Dir: " << directoryName << std::endl;  // MM: added
 	if(multiplexer==0)
 		{
 		/* Open a non-shared standard directory: */

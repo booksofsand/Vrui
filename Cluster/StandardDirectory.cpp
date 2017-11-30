@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <Misc/FileTests.h>
 #include <IO/StandardDirectory.h>
 #include <Cluster/OpenFile.h>
+#include <iostream> // MM: added
 
 namespace Cluster {
 
@@ -38,6 +39,8 @@ StandardDirectory::StandardDirectory(Multiplexer* sMultiplexer,const char* sPath
 	:pipe(sMultiplexer),
 	 entryType(Misc::PATHTYPE_DOES_NOT_EXIST)
 	{
+	std::cout << "In StandardDirectory::StandardDirectory (Cluster::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    Path: " << sPathName << std::endl;  // MM: added
 	/* Prepend the current directory path to the path name if the given path name is relative: */
 	if(sPathName[0]!='/')
 		{
@@ -57,6 +60,8 @@ StandardDirectory::StandardDirectory(Multiplexer* sMultiplexer,const char* sPath
 	 pathName(sPathName),
 	 entryType(Misc::PATHTYPE_DOES_NOT_EXIST)
 	{
+	std::cout << "In StandardDirectory::StandardDirectory (Cluster::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    Path: " << sPathName << std::endl;  // MM: added
 	}
 
 std::string StandardDirectory::getName(void) const
@@ -132,6 +137,9 @@ Misc::PathType StandardDirectory::getEntryType(void) const
 
 IO::FilePtr StandardDirectory::openFile(const char* fileName,IO::File::AccessMode accessMode) const
 	{
+	std::cout << "In StandardDirectory::openFile (Cluster::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    File: " << fileName << std::endl;  // MM: added
+
 	/* Assemble the absolute path name of the given file: */
 	std::string filePath;
 	if(fileName[0]=='/')
@@ -154,6 +162,9 @@ IO::FilePtr StandardDirectory::openFile(const char* fileName,IO::File::AccessMod
 
 IO::DirectoryPtr StandardDirectory::openDirectory(const char* directoryName) const
 	{
+	std::cout << "In StandardDirectory::openDirectory (Cluster::StandardDirectory.cpp)." << std::endl;  // MM: added
+	std::cout << "    Path: " << directoryName << std::endl;  // MM: added
+
 	/* Assemble the absolute path name of the given directory: */
 	std::string directoryPath;
 	if(directoryName[0]=='/')

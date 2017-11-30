@@ -19,6 +19,9 @@ with the OpenGL Support Library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
+// MM: this is the data structure that holds the color values;
+//     ElevationColorMap extends this class. 
+
 #ifndef GLCOLORMAP_INCLUDED
 #define GLCOLORMAP_INCLUDED
 

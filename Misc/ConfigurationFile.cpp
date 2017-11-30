@@ -31,6 +31,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <vector>
 #include <Misc/File.h>
 #include <Misc/StandardValueCoders.h>
+#include <iostream> // MM: added
 
 namespace Misc {
 
@@ -1454,6 +1455,7 @@ Methods of class ConfigurationFile:
 
 void ConfigurationFile::load(const char* newFileName)
 	{
+	std::cout << "In ConfigurationFile::load (Misc::ConfigurationFile.cpp)." << std::endl;  // MM: added
 	/* Call base class method: */
 	ConfigurationFileBase::load(newFileName);
 	
