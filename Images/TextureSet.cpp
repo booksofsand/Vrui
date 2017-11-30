@@ -19,8 +19,6 @@ with the Image Handling Library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ***********************************************************************/
 
-// MM: need to examine this file again after researching textures (TO DO)
-
 #include <Images/TextureSet.h>
 
 #include <Misc/ThrowStdErr.h>

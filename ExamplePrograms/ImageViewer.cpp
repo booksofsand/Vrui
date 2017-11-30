@@ -35,7 +35,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Vrui/ToolManager.h>
 #include <Vrui/DisplayState.h>
 #include <Vrui/OpenFile.h>
-#include <IOstream> //MM:
 
 class ImageViewer:public Vrui::Application
 	{
@@ -43,8 +42,7 @@ class ImageViewer:public Vrui::Application
 	private:
 	class PipetteTool; // Forward declaration
 	typedef Vrui::GenericToolFactory<PipetteTool> PipetteToolFactory; // Pipette tool class uses the generic factory class
-
-	  // MM: PipetteTool - picks color values from an image. sounds useful!
+	
 	class PipetteTool:public Vrui::Tool,public Vrui::Application::Tool<ImageViewer> // A tool class to pick color values from an image, derived from application tool class
 		{
 		friend class Vrui::GenericToolFactory<PipetteTool>;
@@ -117,7 +115,6 @@ void ImageViewer::PipetteTool::setPixelPos(void)
 	}
 
 void ImageViewer::PipetteTool::initClass(void)
-
 	{
 	/* Create a factory object for the pipette tool class: */
 	factory=new PipetteToolFactory("PipetteTool","Pick Color Value",0,*Vrui::getToolManager());
@@ -156,8 +153,7 @@ void ImageViewer::PipetteTool::buttonCallback(int buttonSlotIndex,Vrui::InputDev
 		/* Stop dragging: */
 		dragging=false;
 		setPixelPos();
-
-		// MM: see the following operations for grabbing a color (though from an area larger than a pixel)
+		
 		/* Access the displayed image: */
 		Images::RGBImage image(application->textures.getTexture(0U).getImage());
 		
@@ -233,33 +229,12 @@ Methods of class ImageViewer:
 ImageViewer::ImageViewer(int& argc,char**& argv)
 	:Vrui::Application(argc,argv)
 	{
-	// Load the image into the texture set
-        // MM: addTexture(BaseImage, open file target, internal format, key)
-	//     Adds a new texture image for the given key and returns the new texture set entry;
-	//     throws exception if key is not unique.
-	//     Since images are 2D arrays of pixels, it will be bound to the GL_TEXTURE_2D target.
-	//     GL_RGB8 must mean RGB 8-bit image. Note the key, 0U, is referenced in display()
-	Images::TextureSet::Texture& tex=textures.addTexture(Images::readImageFile(argv[1],
-										   Vrui::openFile(argv[1])),
-							     GL_TEXTURE_2D,
-							     GL_RGB8,
-							     0U);
+	/* Load the image into the texture set: */
+	Images::TextureSet::Texture& tex=textures.addTexture(Images::readImageFile(argv[1],Vrui::openFile(argv[1])),GL_TEXTURE_2D,GL_RGB8,0U);
 	
-	// Set clamping and filtering parameters for mip-mapped linear interpolation
-	// MM: mipmaps are pre-calculated, optimized sequences of images, intended to
-	//     increase rendering speed. 
+	/* Set clamping and filtering parameters for mip-mapped linear interpolation: */
 	tex.setMipmapRange(0,1000);
-	// MM: GL_CLAMP_TO_EDGE causes s coordinates to be clamped to the range
-	//     [1/2n, 1 - 1/2n], where n is the size of the texture
-	//     in the direction of clamping
 	tex.setWrapModes(GL_CLAMP_TO_EDGE,GL_CLAMP_TO_EDGE);
-	// MM: The texture minifying function is used whenever the pixel being textured
-	//     maps to an area greater than one texture element. GL_LINEAR_MIPMAP_LINEAR
-	//     chooses the two mipmaps that most closely match the size of the pixel
-	//     being textured and uses the GL_LINEAR criterion (a weighted average of
-	//     the four texture elements that are closest to the center of the pixel) to
-	//     produce a texture value from each mipmap. The final texture value is a
-	//     weighted average of those two values.
 	tex.setFilterModes(GL_LINEAR_MIPMAP_LINEAR,GL_LINEAR);
 	
 	/* Initialize the pipette tool class: */
@@ -278,28 +253,20 @@ void ImageViewer::display(GLContextData& contextData) const
 	glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 	
 	/* Get the texture set's GL state: */
-	// MM: getGLState returns OpenGL texture state object for the given OpenGL context
 	Images::TextureSet::GLState* texGLState=textures.getGLState(contextData);
 	
 	/* Bind the texture object: */
-	// MM: bindTexture binds the texture object associated with the given key
-	//     to its texture target on the current texture unit, returns texture state.
-	//     Note the key is 0U, which was the key in ImageViewer constructor.
 	const Images::TextureSet::GLState::Texture& tex=texGLState->bindTexture(0U);
 	const Images::BaseImage& image=tex.getImage();
-	// MM: try replacing this with Image so can test the setPixel() method (TO DO)
 	
 	/* Query the range of texture coordinates: */
 	const GLfloat* texMin=tex.getTexCoordMin();
 	const GLfloat* texMax=tex.getTexCoordMax();
 	
 	/* Draw the image: */
-	/* MM: Note: texture coordinates specify the point in the texture image that will 
-               correspond to the vertex you're specifying them for. see Vrui and OpenGL notes */
 	glBegin(GL_QUADS);
-	// MM: ^ specifies the following vertices as groups of 4 to interpret as quadrilaterals
-	glTexCoord2f(texMin[0],texMin[1]);  // MM: texture coords. 2f means two floats (for 2D)
-	glVertex2i(0,0);                    // MM: vertex points. 2i means two ints (for 2D)
+	glTexCoord2f(texMin[0],texMin[1]);
+	glVertex2i(0,0);
 	glTexCoord2f(texMax[0],texMin[1]);
 	glVertex2i(image.getSize(0),0);
 	glTexCoord2f(texMax[0],texMax[1]);
@@ -307,14 +274,11 @@ void ImageViewer::display(GLContextData& contextData) const
 	glTexCoord2f(texMin[0],texMax[1]);
 	glVertex2i(0,image.getSize(1));
 	glEnd();
-	// MM: ^ ends the listing of vertices
 	
 	/* Protect the texture object: */
 	glBindTexture(GL_TEXTURE_2D,0);
 	
 	/* Draw the image's backside: */
-	// MM: this is because ImageViewer allows you to tilt & move the image
-	//     so it needs a blank "back" for if you flip the image over
 	glDisable(GL_TEXTURE_2D);
 	glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
 	

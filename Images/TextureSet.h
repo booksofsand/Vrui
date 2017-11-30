@@ -172,7 +172,6 @@ class TextureSet:public GLObject
 		virtual ~GLState(void); // Releases all allocated resources
 		
 		/* New methods: */
-		// MM: bindTexture is used in BooksOfSand: DEM, ElevationColorMap, and SurfaceRenderer
 		const Texture& bindTexture(Key key); // Binds the texture object associated with the given key to its texture target on the current texture unit and returns texture state; throws exception if key does is not in the texture set
 		};
 	

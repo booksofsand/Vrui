@@ -23,12 +23,12 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #ifndef VRDEVICEDAEMON_CONFIG_INCLUDED
 #define VRDEVICEDAEMON_CONFIG_INCLUDED
 
-#define VRDEVICEDAEMON_CONFIG_VRDEVICESDIR "/home/okreylos/Share/VRDevices/lib64"
-#define VRDEVICEDAEMON_CONFIG_VRCALIBRATORSDIR "/home/okreylos/Share/VRCalibrators/lib64"
+#define VRDEVICEDAEMON_CONFIG_VRDEVICESDIR "/usr/local/lib64/Vrui-4.2/VRDevices"
+#define VRDEVICEDAEMON_CONFIG_VRCALIBRATORSDIR "/usr/local/lib64/Vrui-4.2/VRCalibrators"
 #define VRDEVICEDAEMON_CONFIG_DSONAMETEMPLATE "lib%s.so"
 
-#define VRDEVICEDAEMON_CONFIG_CONFIGFILENAME "/home/okreylos/Share/VRDevices.cfg"
-#define VRDEVICEDAEMON_CONFIG_CONFIGDIR "/home/okreylos/Projects/VRDeviceDaemon/Config"
+#define VRDEVICEDAEMON_CONFIG_CONFIGFILENAME "/usr/local/etc/Vrui-4.2/VRDevices.cfg"
+#define VRDEVICEDAEMON_CONFIG_CONFIGDIR "/usr/local/etc/Vrui-4.2/VRDeviceDaemon"
 
 #define VRDEVICEDAEMON_CONFIG_INPUT_H_HAS_STRUCTS 1
 
